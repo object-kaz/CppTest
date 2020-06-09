@@ -380,13 +380,11 @@ public:
     {
         cout<<"2";
     }
-    Complex(double real, double imaginary) 
-: real_(real), imaginary_(imaginary)
+    Complex(double real, double imaginary) : real_(real), imaginary_(imaginary)
     {
         cout<<"3";
     }
-    Complex(const Complex &old)
-:real_(old.real_),imaginary_(old.imaginary_) 
+    Complex(const Complex &old) :real_(old.real_),imaginary_(old.imaginary_) 
     {
         cout<<"4";
     }

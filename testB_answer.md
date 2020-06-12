@@ -487,30 +487,54 @@ class AutoPtr {
 private:
     T *ptr_;
     //计数器
-    int *counter_;
+    mutable int *counter_;
 
 public:
-    AutoPtr(T *ptr = NULL) 
-        : ptr_(ptr),counter_(NULL) 
+    AutoPtr(T *ptr = NULL) : ptr_(ptr),counter_(NULL) 
     {
         if(ptr != NULL)
         {
-            this->counter_ = new int(1);
+			this->counter_ = new int(1);
         }
     }
 
-    //这里不需要自定义拷贝操作，因为counter_是同一内存区域的AutoPtr所共享的。
-
-    ~AutoPtr()
+	AutoPtr(const AutoPtr& old) : ptr_(old.ptr_),counter_(old.counter_) 
     {
-        this->counter_--;
+		//old.ptr_不为空，则counter_ 也不为空
+        if(old.ptr_ != NULL)
+			(*this->counter_)++;
+    }
+
+	AutoPtr &operator=(const AutoPtr& old)
+	{
+		//拷贝赋值时，先需要解除原有绑定
+		this->release();
+
+		//覆盖
+		this->counter_ = old.counter_;
+		this->ptr_ = old.ptr_;
+        if(old.ptr_ != NULL)
+			(*this->counter_)++;
+		return *this;
+	}
+
+	//析构
+	~AutoPtr()
+    { 
+		this->release();
+    }
+
+	//解除关联
+	void release()
+	{
+		(*this->counter_)--;
         //删除计数器和动态指针
         if(*this->counter_ == 0)
         {
             delete this->counter_;
             delete this->ptr_;
-        }   
-    }
+        }  
+	}
 
     //对于变量的解引用
     T &operator *()
@@ -537,7 +561,6 @@ public:
     }
 
 };
-
 ```
 
 **[解析]**

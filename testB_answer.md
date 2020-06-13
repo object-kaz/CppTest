@@ -417,7 +417,6 @@ public:
 **[参考答案1]**
 
 ```c++
-//用于接管单个内存空间
 template <typename T>
 class AutoPtr {
 private:
@@ -426,11 +425,9 @@ private:
     mutable bool priority_;
 
 public:
-    AutoPtr(T *ptr = NULL) 
-        : ptr_(ptr),priority_(ptr != NULL) {}
+    AutoPtr(T *ptr = NULL) : ptr_(ptr),priority_(ptr != NULL) {}
 
-    AutoPtr(const AutoPtr &old) 
-        : ptr_(old.ptr),priority_(old.priority_) 
+    AutoPtr(const AutoPtr &old) : ptr_(old.ptr_),priority_(old.priority_) 
     {
         //关闭原对象的删除权限
         old.priority_ = false;
@@ -453,43 +450,29 @@ public:
     }
 
     //对于变量的解引用
-    T &operator *()
-    {
-        return *this->ptr_;
-    }
-
-    //对于常量的解引用
-    const T &operator *() const
+    T &operator *() const
     {
         return *this->ptr_;
     }
 
     //对于变量的成员指针访问
-    T *operator ->()
-    {
-        return this->ptr_;
-    }
-    
-    //对于常量的成员指针访问
-    const T *operator ->() const
+    T *operator ->() const
     {
         return this->ptr_;
     }
 
 };
-
 ```
 
 **[参考答案2]**
 
 ```c++
-//用于接管单个内存空间
 template <typename T>
 class AutoPtr {
 private:
     T *ptr_;
     //计数器
-    mutable int *counter_;
+    int *counter_;
 
 public:
     AutoPtr(T *ptr = NULL) : ptr_(ptr),counter_(NULL) 
@@ -536,28 +519,16 @@ public:
             delete this->counter_;
             delete this->ptr_;
         }  
+		this->counter_ = NULL;
+		this->ptr_ = NULL;
 	}
 
-    //对于变量的解引用
-    T &operator *()
+    T &operator *() const
     {
         return *this->ptr_;
     }
 
-    //对于常量的解引用
-    const T &operator *() const
-    {
-        return *this->ptr_;
-    }
-
-    //对于变量的成员指针访问
-    T *operator ->()
-    {
-        return this->ptr_;
-    }
-    
-    //对于常量的成员指针访问
-    const T *operator ->() const
+    T *operator ->() const
     {
         return this->ptr_;
     }

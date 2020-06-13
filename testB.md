@@ -107,7 +107,7 @@ int compare(const T& t1,const T& t2)
 {
     if(t1 > t2) 
         return 1;
-    if(t1 < t2) 
+    else if(t1 < t2) 
         return -1;
     else 
         return 0;
@@ -115,7 +115,13 @@ int compare(const T& t1,const T& t2)
 
 int compare(const char * const &t1,const char * const &t2)
 {
-    return strcmp(t1,t2);
+    int result = strcmp(t1,t2);
+	if(result > 0) 
+        return 1;
+    else if(result < 0) 
+        return -1;
+    else 
+        return 0;
 }
 
 int main()

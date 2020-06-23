@@ -1,4 +1,4 @@
-# C++程序设计模拟试题
+# C++程序设计模拟试题B
 
 >命题：ObjectKaz 
 >审题：ObjectKaz 
@@ -297,7 +297,7 @@ struct A
     }
 };
 
-struct B1 : public A
+struct B1 : virtual public A
 {
     int b1_;
     B1(int a, int b1) : A(a), b1_(b1)
@@ -314,7 +314,7 @@ struct B1 : public A
     }
 };
 
-struct B2 : public A
+struct B2 : virtual public A
 {
     int b2_;
     B2(int a, int b2) : A(a), b2_(b2)

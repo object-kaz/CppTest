@@ -42,7 +42,7 @@ public:
 	Box(int length,int width,int height) :
 	  length_(length),width_(width),height_(height) {}
     
-    int get_volume() const
+    int get_volume()
     {
         return this->length_ * this->width_ * this->height_;
     }
@@ -197,7 +197,7 @@ public:
         total--;
     }
     
-    int get_volume() const
+    int get_volume()
     {
         return this->length_ * this->width_ * this->height_;
     }
@@ -227,7 +227,7 @@ int Box::total = 0;
 int main()
 {
     Box b1(1,2,3),b2(4,5,6),b3(b1);
-    int (Box::*pmf)() const = Box::get_volume;
+    int (Box::*pmf)() = Box::get_volume;
 
     b1.set_width(3).set_height(4).set_length(5);
     cout << (b1.*pmf)() << (b2.*pmf)() << (b3.*pmf)() << endl;
